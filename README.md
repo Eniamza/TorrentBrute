@@ -6,7 +6,7 @@ Clients such as µTorrent and qBittorrent have WebUI enabled by default. This sc
 
 A malicious actor can brute force the WebUI Login without any limitations or Restrictions and Download malware on the target system.
 
-### Instructions (For Qbittorrent)
+### Instructions File Mode (For Qbittorrent)
 
 - Add a torrent for downloading.
 - Click The Active Torrent File
@@ -16,6 +16,14 @@ A malicious actor can brute force the WebUI Login without any limitations or Res
 - Paste that into the `ips.txt` file
 - run `npm install`
 - run `node OpenIP.js`
+
+### Instructions for WebUI API Mode (For Qbittorrent)
+
+- Go to Preferences > WebUI and Enable WebUI
+- Enter username and Password under the authentication Tab
+- Fill in the `config.json` file
+- Run the `OpenIP.js`
+- Choose Option 2
 
 ### TODO
 
