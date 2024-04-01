@@ -19,7 +19,8 @@ A malicious actor can brute force the WebUI Login without any limitations or Res
 
 ### TODO
 
-- [ ] Auto Fetch from qBittorrent Client API
+- [X] Auto Fetch from qBittorrent Client API
+- [ ] Auto Detect Active Torrents and Fetch Info Hash
 - [ ] Live Listening to the Peer List
 
 ### Give a Thanks
