@@ -3,6 +3,8 @@ const readline = require('readline');
 const axios = require('axios');
 const {webui,username,password} = require('./config.json');
 const {login,getIPs} = require('./qb.js');
+const prompt = require('prompt-sync')();    
+
 
 async function checkAuthPage(ip) {
 
@@ -29,9 +31,9 @@ async function checkAuthPage(ip) {
 
 }
 
-async function evaluatebyWebAPI() {
-    const cookie = await login(webui, username, password);
-    const response = await getIPs('d57591f78926c12dded15adb7f38511ef571d703');
+async function evaluatebyWebAPI(torrentHash) {
+
+    const response = await getIPs(torrentHash);
     
     try {
         for (const ip of response) {
@@ -68,5 +70,49 @@ async function processLineByLine() {
   }
 }
 
-//processLineByLine();
-// processLineByLine()
+async function main() {
+
+    let chalk;
+    await import('chalk').then((module) => {
+        chalk = module.default;
+    });
+    
+    console.log(chalk.greenBright(`
+    
+████████╗ ██████╗ ██████╗ ██████╗ ███████╗███╗   ██╗████████╗██████╗ ██████╗ ██╗   ██╗████████╗███████╗
+╚══██╔══╝██╔═══██╗██╔══██╗██╔══██╗██╔════╝████╗  ██║╚══██╔══╝██╔══██╗██╔══██╗██║   ██║╚══██╔══╝██╔════╝
+   ██║   ██║   ██║██████╔╝██████╔╝█████╗  ██╔██╗ ██║   ██║   ██████╔╝██████╔╝██║   ██║   ██║   █████╗  
+   ██║   ██║   ██║██╔══██╗██╔══██╗██╔══╝  ██║╚██╗██║   ██║   ██╔══██╗██╔══██╗██║   ██║   ██║   ██╔══╝  
+   ██║   ╚██████╔╝██║  ██║██║  ██║███████╗██║ ╚████║   ██║   ██████╔╝██║  ██║╚██████╔╝   ██║   ███████╗
+   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═════╝ ╚═╝  ╚═╝ ╚═════╝    ╚═╝   ╚══════╝
+                                                                                                       
+`));
+
+    console.log(chalk.greenBright(`Welcome to TorrentBrute v1.1`))
+    console.log(chalk.greenBright(`================================`))
+    console.log(chalk.greenBright(`Select an option:`))
+    console.log(chalk.greenBright(`1. Evaluate IPs from a file`))
+    console.log(chalk.greenBright(`2. Evaluate IPs from Web API`))
+    console.log(chalk.greenBright(`================================`))
+
+    let option
+
+    while (option !== '1' && option !== '2') {
+        option = prompt(chalk.red.bold('Enter an option: '));
+        if (option !== '1' && option !== '2') {
+            console.log(chalk.red.bold('Invalid option. Please enter a valid option.'))
+        }
+    }
+    
+    if (option === '1') {
+        await processLineByLine();
+    } else {
+        let torrenthash = prompt(chalk.yellow.bold('Enter the torrent hash: '));
+        console.log(chalk.greenBright(`================================`))
+        console.log(chalk.greenBright(`================================`))
+        await evaluatebyWebAPI(torrenthash);
+    }
+
+}
+
+main();
