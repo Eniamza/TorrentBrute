@@ -1,2 +1,4 @@
 /filteredIPs.txt
 /node_modules
+ips.txt
+.vscode/settings.json

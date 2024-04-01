@@ -1,6 +1,18 @@
 const fs = require('fs');
 const readline = require('readline');
 const axios = require('axios');
+const {webui,username,password} = require('./config.json');
+const {login,getIPs} = require('./qb.js');
+
+async function evaluatebyWebUI() {
+  const response = await axios.get(`${webui}/api/v1/ips`, {
+    auth: {
+      username: username,
+      password: password
+    }
+  });
+  return response.data;
+}
 
 
 async function processLineByLine() {
