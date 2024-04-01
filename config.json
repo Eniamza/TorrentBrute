@@ -1,5 +1,5 @@
 {
-    "webui": "",
-    "username": "",
-    "password": ""
+    "webui": "http://localhost:8080",
+    "username": "admin",
+    "password": "EEE@@444"
 }

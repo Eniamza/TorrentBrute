@@ -4,14 +4,13 @@ const axios = require('axios');
 const {webui,username,password} = require('./config.json');
 const {login,getIPs} = require('./qb.js');
 
-async function evaluatebyWebUI() {
-  const response = await axios.get(`${webui}/api/v1/ips`, {
-    auth: {
-      username: username,
-      password: password
-    }
-  });
-  return response.data;
+async function evaluatebyWebAPI() {
+    const cookie = await login(webui, username, password);
+    const response = await getIPs('b5d3c4f6b0e4f1b9f4e9d7a5f1b1e2e5b7a9f0e6');
+    let peerList = Object.keys(response.peers);
+    console.log(peerList);
+    console.log(cookie);
+    return response;
 }
 
 
