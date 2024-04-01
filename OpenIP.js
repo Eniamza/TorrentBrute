@@ -8,21 +8,26 @@ const prompt = require('prompt-sync')();
 
 async function checkAuthPage(ip) {
 
+  let chalk;
+  await import('chalk').then((module) => {
+      chalk = module.default;
+  });
+
     axios.get(`http://${ip}/auth`,{
         timeout: 5000
     })
     .then(function (response) {
-      console.log(`IP: ${ip}  |   ${response.status}`);
+      // console.log(chalk.green(`IP: ${ip}  |   ${response.status}`));
     })
     .catch(function (error) {
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          console.log(`IP: ${ip}  |   ${error.response.status}`);
-          fs.appendFile('filteredIPs.txt', `${ip}\n`, (err) => {console.log(err)});
+          console.log(chalk.greenBright(`IP: ${ip}`));
+          fs.appendFile('filteredIPs.txt', `${ip}\n`, (err) => { if(err){console.log(err)}});
         } else if (error.request) {
           // The request was made but no response was received
-          console.log(`IP: ${ip}  |   No response`);
+          // console.log(chalk.red(`IP: ${ip}  |   No response`));
         } else {
           // Something happened in setting up the request that triggered an Error
           console.log('Error', error.message);
@@ -41,7 +46,7 @@ async function evaluatebyWebAPI(torrentHash) {
         }
         } catch (error) {
     
-        console.error(error);
+        // console.error(error);
     }
 
 
@@ -62,7 +67,9 @@ async function processLineByLine() {
             await checkAuthPage(ip);
         } catch (error) {
     
-        console.error(error);
+        if (error) {
+          console.error(error);
+        }
     }
 
 
@@ -120,7 +127,10 @@ async function main() {
         console.log(chalk.greenBright(`================================`))
         console.log(chalk.blue(`Evaluating IPs for torrent hash: ${torrenthash}`))
         console.log(chalk.greenBright(`================================`))
+        console.log(chalk.greenBright.bold(`Found IPs`))
+
         await evaluatebyWebAPI(torrenthash);
+        
     }
 
 }

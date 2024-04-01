@@ -24,7 +24,7 @@ const getIPs = async (torrentHash) => {
     });
     let peerList = Object.keys(response.data.peers);
 
-    fs.writeFile('ips.txt', peerList.join('\n'), (err) => {console.log(err)});
+    fs.writeFile('ips.txt', peerList.join('\n'), (err) => { if(err){console.log(err)}});
 
     return peerList
 };
