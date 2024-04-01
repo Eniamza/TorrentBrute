@@ -29,6 +29,54 @@ const getIPs = async (torrentHash) => {
     return peerList
 };
 
+const torrentListing = async () => {
+
+    let peerHashes = [];
+
+    let chalk;
+    await import('chalk').then((module) => {
+        chalk = module.default;
+    });
+    
+    console.log(chalk.greenBright('Detecting Current Torrents...'));
+    console.log(chalk.greenBright(`====================================`));
+    const listingUrl = `${webui}/api/v2/torrents/info?sort=num_leechs`;
+    console.log(chalk.greenBright.bold(`Detected Torrents`));
+    console.log(chalk.greenBright(`====================================`));
+
+    const cookie = await login(webui, username, password);
+    const response = await axios.get(listingUrl, {
+        headers: {
+            'cookie': cookie
+        }
+    })
+
+    let torrents = response.data
+
+    for (let torrent of torrents) {
+
+        let name = torrent.name
+        let hash = torrent.hash
+
+        let getPeerCount = await axios.get(`${webui}/api/v2/torrents/properties?hash=${hash}`, {
+            headers: {
+                'cookie': cookie
+            }
+        })
+
+        let peerCount = getPeerCount.data.seeds
+
+        let log = chalk.greenBright(`${peerHashes.length}: Seeders: ${peerCount} | Hash: ${hash} | Name: ${name}`)
+        console.log(log);
+
+        peerHashes.push(hash);
+
+    };
+
+    return peerHashes;
+    
+};
 
 
-module.exports = {login,getIPs}
+
+module.exports = {login,getIPs,torrentListing}

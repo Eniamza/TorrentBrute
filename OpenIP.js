@@ -2,7 +2,7 @@ const fs = require('fs');
 const readline = require('readline');
 const axios = require('axios');
 const {webui,username,password} = require('./config.json');
-const {login,getIPs} = require('./qb.js');
+const {login,getIPs,torrentListing} = require('./qb.js');
 const prompt = require('prompt-sync')();    
 
 
@@ -127,10 +127,33 @@ async function main() {
 
         await processLineByLine();
     } else {
-        let torrenthash = prompt(chalk.yellow.bold('Enter the torrent hash: '));
+
+        console.log(chalk.greenBright(`1. Enter Torrent Hash Manually`))
+        console.log(chalk.greenBright(`2. List all Torrents`))
         console.log(chalk.greenBright(`================================`))
 
-        await evaluatebyWebAPI(torrenthash);
+        let option = prompt(chalk.red.bold('Enter an option: '));
+
+        if (option === '1') {
+          let torrenthash = prompt(chalk.yellow.bold('Enter the torrent hash: '));
+          await evaluatebyWebAPI(torrenthash);
+        }
+        else {
+          let hashes = await torrentListing();
+          let chosenOption = -1
+
+          while (chosenOption < 0 || chosenOption > hashes.length) {
+            chosenOption = Number(prompt(chalk.red.bold('Enter the torrent number: ')));
+            if (chosenOption < 0 || chosenOption > hashes.length) {
+              console.log(chalk.red.bold('Invalid option. Please enter a valid option.'))
+            }
+          }
+
+          await evaluatebyWebAPI(hashes[chosenOption]);
+
+        }
+
+
         
     }
 
