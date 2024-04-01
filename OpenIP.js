@@ -72,6 +72,8 @@ async function processLineByLine() {
 
 async function main() {
 
+    console.clear();
+
     let chalk;
     await import('chalk').then((module) => {
         chalk = module.default;
@@ -88,20 +90,27 @@ async function main() {
                                                                                                        
 `));
 
-    console.log(chalk.greenBright(`Welcome to TorrentBrute v1.1`))
+    console.log(chalk.greenBright(`Welcome to TorrentBrute v1.1\nby https://github.com/eniamza`))
     console.log(chalk.greenBright(`================================`))
     console.log(chalk.greenBright(`Select an option:`))
     console.log(chalk.greenBright(`1. Evaluate IPs from a file`))
     console.log(chalk.greenBright(`2. Evaluate IPs from Web API`))
+    console.log(chalk.greenBright(`0. Exit`))
     console.log(chalk.greenBright(`================================`))
 
     let option
 
     while (option !== '1' && option !== '2') {
         option = prompt(chalk.red.bold('Enter an option: '));
+        console.log(chalk.greenBright(`================================`))
+        if (option === '0') {
+          console.log(chalk.greenBright(`Goodbye! Don't be Naughty!`))
+          process.exit(0);
+      }
         if (option !== '1' && option !== '2') {
             console.log(chalk.red.bold('Invalid option. Please enter a valid option.'))
         }
+
     }
     
     if (option === '1') {
@@ -109,6 +118,7 @@ async function main() {
     } else {
         let torrenthash = prompt(chalk.yellow.bold('Enter the torrent hash: '));
         console.log(chalk.greenBright(`================================`))
+        console.log(chalk.blue(`Evaluating IPs for torrent hash: ${torrenthash}`))
         console.log(chalk.greenBright(`================================`))
         await evaluatebyWebAPI(torrenthash);
     }
