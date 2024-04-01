@@ -121,13 +121,14 @@ async function main() {
     }
     
     if (option === '1') {
+      console.log(chalk.blue(`Evaluating IPs from the file`))
+      console.log(chalk.greenBright(`================================`))
+      console.log(chalk.greenBright.bold(`Found IPs`))
+
         await processLineByLine();
     } else {
         let torrenthash = prompt(chalk.yellow.bold('Enter the torrent hash: '));
         console.log(chalk.greenBright(`================================`))
-        console.log(chalk.blue(`Evaluating IPs for torrent hash: ${torrenthash}`))
-        console.log(chalk.greenBright(`================================`))
-        console.log(chalk.greenBright.bold(`Found IPs`))
 
         await evaluatebyWebAPI(torrenthash);
         
